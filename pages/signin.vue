@@ -31,6 +31,10 @@
                         Neteisingas slaptažodis arba vartotojas šiuo prisijungimo vardu neregistruotas.
                         <v-btn color="pink" flat @click="error_occured = false">Uždaryti</v-btn>
                     </v-snackbar>
+                    <v-snackbar v-model="success_occured" bottom>
+                        Sėkmingai prisijungta. Peradresuojama...
+                        <v-btn color="pink" flat @click="success_occured = false">Uždaryti</v-btn>
+                    </v-snackbar>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -54,6 +58,7 @@
                 v => !!v || 'Įveskite slaptažodį.'
             ],
             error_occured: false,
+            success_occured: false
         }),
         methods: 
         {
@@ -70,11 +75,11 @@
                     const key = _.get(response.data, 'authorizationKey', undefined)
                     if (key !== undefined) {
                         Cookie.set('bearer', key, { expires: 7 })
-                        this.$router.push('/')
+                        this.success_occured = true
+                        setTimeout(() => {
+                            this.$router.push('/')
+                        }, 2000)
                     }
-
-                    this.error_occured = true
-                
                 }).catch((e) => {
                     this.loading = false
                     this.error_occured = true

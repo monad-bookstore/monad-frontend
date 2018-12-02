@@ -11,13 +11,13 @@
                         <v-form v-model="valid" @keyup.enter.native="register">
                             <v-card-text>
                                 <v-text-field append-icon="account_circle" 
-                                    v-model="username" :rules="username_rules" label="Vartotojo vardas" required></v-text-field>
+                                    v-model="username" :rules="username_rules" :error-messages="errors.username" label="Vartotojo vardas" required></v-text-field>
 
                                 <v-text-field append-icon="fas fa-at" 
-                                    v-model="email" :rules="email_rules" label="El. pašto adresas" required></v-text-field>
+                                    v-model="email" :rules="email_rules" :error-messages="errors.mail" label="El. pašto adresas" required></v-text-field>
 
                                 <v-text-field append-icon="fingerprint" type="password" 
-                                    v-model="password" :rules="password_rules" label="Slaptažodis" required></v-text-field>
+                                    v-model="password" :rules="password_rules" :error-messages="errors.password" label="Slaptažodis" required></v-text-field>
 
                                 <v-text-field append-icon="fingerprint" type="password" 
                                     v-model="password_confirmation" :rules="password_confirmation_rules" label="Pakartokite slaptažodį" required></v-text-field>
@@ -28,6 +28,10 @@
                             </v-btn>
                         </v-form>
                     </v-card>
+                    <v-snackbar v-model="display" bottom>
+                        {{ message }}
+                        <v-btn color="pink" flat @click="display = false">Uždaryti</v-btn>
+                    </v-snackbar>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -59,16 +63,57 @@
                     v => !!v || 'Įveskite slaptažodį antrą kartą.',
                     v => v == this.password || 'Slaptažodžiai privalo sutapti.'
                 ],
-                requested: false,
-                successful: false
+                errors: {
+                    username: [],
+                    password: [],
+                    mail: [],
+                },
+                display: false,
+                message: ''
             }
         },
         methods: {
             register() {
                 let payload = {
                     username: this.username,
-                    password: this.password
+                    password: this.password,
+                    mail: this.email
                 }
+
+                this.$axios.post("/api/client/register", payload).then((response) => {
+                    const data = response.data
+                    if(_.has(data, "message")) {
+                        this.display = true
+                        this.message = data.message
+                        setTimeout(() => {
+                            this.$router.push("/signin")
+                        }, 2000)
+                    }
+                }).catch((e) => {
+                    const data = _.mapKeys(e.response.data, function(v, k) {
+                        return k.toLowerCase()
+                    })
+
+                    if (_.has(data, "username")) {
+                        this.errors.username = data.username
+                    }
+                    else if (_.has(data, "mail")) {
+                        this.errors.mail = data.mail
+                    }
+                    else if (_.has(data, "password")) {
+                        this.errors.password = data.password
+                    }
+                    else if(_.has(data, "message")) {
+                        this.errors.display = true
+                        this.errors.message = data.message
+                    }
+
+                    setTimeout(() => {
+                        this.errors.username = ''
+                        this.errors.password = ''
+                        this.errors.mail = ''
+                    }, 3000)
+                })
             }
         }
     }

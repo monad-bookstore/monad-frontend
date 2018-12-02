@@ -22,6 +22,9 @@
 					<v-btn flat @click="cart_drawer = !cart_drawer" class="ma-0">
 						Krepšelis
 					</v-btn>
+					<v-btn flat @click="logout" class="ma-0">
+						Atsijungti
+					</v-btn>
 			</template>
 		</v-toolbar>
 		<template v-if="isAuthenticated">
@@ -38,14 +41,20 @@
 		<transition name="component-fade" appear>
 			<nuxt/>
 		</transition>
+		<v-snackbar v-model="logout_complete" bottom>
+            Atsijungta
+            <v-btn color="pink" flat @click="logout_complete = false">Uždaryti</v-btn>
+		</v-snackbar>
 	</v-app>
 </template>
 <script>
 
 	import { mapGetters } from 'vuex'
+	import Cookie from 'js-cookie'
 	export default {
 		data: () => ({
 			cart_drawer: false,
+			logout_complete: false,
 		}),
 		computed: {
 			...mapGetters([
@@ -60,6 +69,11 @@
 					"elevation-1": !elevation,
 					"monad-toolbar": true
 				}
+			},
+			logout() {
+				this.logout_complete = true
+				Cookie.remove('bearer')
+				this.$store.commit('CLEAR_CLIENT')
 			}
 		}
 	}

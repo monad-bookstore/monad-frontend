@@ -8,9 +8,9 @@
 
  - [x] Autorizavimas
 
-    - [ ] Atsijungimas
+    - [x] Atsijungimas
 
- - [ ] Registracija
+ - [x] Registracija
 
  - [x] Nustatymai
 
