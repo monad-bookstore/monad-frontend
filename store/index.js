@@ -8,6 +8,11 @@ const createStore = () => {
     return new Vuex.Store({
         state: {
             client: undefined,
+            data: {
+                authors: undefined,
+                products: undefined,
+                categories: undefined
+            }
         },
         mutations,
         actions,

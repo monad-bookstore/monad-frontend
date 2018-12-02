@@ -6,8 +6,8 @@
                     <v-text-field clearable v-model="fields.title"
                         label="Knygos pavadinimas" required></v-text-field>
                     <v-select v-model="fields.authors" :items="authors" label="Knygos autoriai"
-                        item-value="id" :item-text="s_author_display" multiple>
-                        <v-list-tile slot="append-item" ripple>
+                        item-value="id" :item-text="s_author_display" multiple dense :menu-props="{ 'closeOnContentClick': true }">
+                        <v-list-tile slot="append-item" ripple @click="dialogs.author_creation = true">
                             <v-list-tile-avatar color="grey lighten-3">
                                 <v-icon>assignment_ind</v-icon>
                             </v-list-tile-avatar>
@@ -22,8 +22,8 @@
                         </v-list-tile>
                     </v-select>
                     <v-select v-model="fields.category" :items="categories" label="Knygos kategorija"
-                        item-value="id" item-text="label">
-                        <v-list-tile slot="append-item" ripple>
+                        item-value="id" item-text="label" :menu-props="{ 'closeOnContentClick': true }">
+                        <v-list-tile slot="append-item" ripple @click="dialogs.category_creation = true">
                             <v-list-tile-avatar color="grey lighten-3">
                                 <v-icon>category</v-icon>
                             </v-list-tile-avatar>
@@ -46,6 +46,10 @@
                 </v-card-text>
             </v-form>
         </v-card>
+        <v-panel-author-creation :visibility="dialogs.author_creation" v-bind:visibility.sync="dialogs.author_creation">
+            </v-panel-author-creation>
+        <v-panel-category-creation :visibility="dialogs.category_creation" v-bind:visibility.sync="dialogs.category_creation">
+            </v-panel-category-creation>
     </v-container>
 </template>
 <script>
@@ -54,6 +58,10 @@
     {
         data: () => ({
             valid: false,
+            dialogs: {
+                author_creation: false,
+                category_creation: false
+            },
             fields: {
                 title: '',
                 authors: [],
@@ -80,6 +88,10 @@
             s_author_display(author) {
                 return `${author.name} ${author.surname}`
             } 
+        },
+        components: {
+            "v-panel-author-creation": require('~/components/store/panel/PanelAuthorAddition.vue').default,
+            "v-panel-category-creation": require('~/components/store/panel/PanelCategoryAddition.vue').default,
         }
     }
 
