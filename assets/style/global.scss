@@ -1,0 +1,21 @@
+@import 'vuetify/dist/vuetify.min.css';
+@import './base/_typography.scss';
+@import './base/_misc.scss';
+
+html {
+    overflow-y: auto;
+}
+
+#monad {
+    background-color: #EEEEEE;
+    background-image: url('~static/background-white-paper-texture.png');
+    background-size: cover;
+    background-position: center center;
+
+    .monad-toolbar {
+        background-color: rgba($color: white, $alpha: 0.8);
+    }
+}
+.content-overlay {
+    background-color: rgba($color: white, $alpha: 0.65);
+}

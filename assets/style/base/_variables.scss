@@ -1,0 +1,18 @@
+// Didžiausias leistinas z koordinatės skaičius. Z koordinatė yra int tipo kintamasis,
+// todėl priskiriama didžiausia leistina reikšmė.
+$z-index-max: 2147483647;
+
+// Mažiausias leistinas z koordinatės skaičius.
+$z-index-min: -2147483647;
+
+// -------------------------------------------
+// Vuetify ekrano lūžio taškai
+// https://vuetifyjs.com/en/layout/breakpoints
+// -------------------------------------------
+$breakpoints: (
+    xs: 0,
+    sm: 600px,
+    md: 960px,
+    lg: (1280px - 16px), // Desktop gets a 16dp reduction
+    xl: (1920px - 16px) // https://material.io/guidelines/layout/responsive-ui.html#responsive-ui-breakpoints
+);

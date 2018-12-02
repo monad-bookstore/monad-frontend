@@ -1,0 +1,27 @@
+{
+  "name": "monad-frontend",
+  "version": "1.0.0",
+  "description": "Monad parduotuvės front-end.",
+  "author": "nesu",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "cross-env": "^5.2.0",
+    "nuxt": "^2.0.0",
+    "vuetify": "^1.2.4",
+    "@nuxtjs/axios": "^5.0.0"
+  },
+  "devDependencies": {
+    "js-cookie": "^2.2.0",
+    "node-sass": "^4.10.0",
+    "nodemon": "^1.11.0",
+    "sass-loader": "^7.1.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2"
+  }
+}
