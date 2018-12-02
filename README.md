@@ -61,7 +61,7 @@
 
     - [ ] Knygos paieška
 
-    - [ ] Kategorijos pasirinkimas
+    - [x] Kategorijos pasirinkimas
 
     - [ ] Knygų puslapiavimas 
 
@@ -87,11 +87,11 @@
 
       > bus praplėsta, kai pilnai funkcionuos knygos pridėjimas.
 
-    - [ ] Knygos pridėjimas
+    - [x] Knygos pridėjimas
 
       - [x] Pagrindinė knygų pridėjimo forma
-      - [ ] Integruotas autoriaus kūrimas
-      - [ ] Integruotas kategorijos kūrimas
-      - [ ] Išsaugojimas
+      - [x] Integruotas autoriaus kūrimas
+      - [x] Integruotas kategorijos kūrimas
+      - [x] Išsaugojimas
 
 
