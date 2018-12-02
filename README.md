@@ -1,6 +1,6 @@
 # monad-frontend
 
-> Internetinės knygų ir publikacijų parduotuvės „Monad“ font-end.
+> Internetinės knygų ir publikacijų parduotuvės „Monad“ front-end.
 
 #### Progresas
 
