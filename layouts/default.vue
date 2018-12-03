@@ -45,6 +45,10 @@
             Atsijungta
             <v-btn color="pink" flat @click="logout_complete = false">Uždaryti</v-btn>
 		</v-snackbar>
+		<v-snackbar v-model="snackbar.display" bottom>
+            {{ snackbar.message }}
+            <v-btn color="pink" flat @click="$store.dispatch('clear_message')">Uždaryti</v-btn>
+		</v-snackbar>
 	</v-app>
 </template>
 <script>
@@ -58,7 +62,7 @@
 		}),
 		computed: {
 			...mapGetters([
-				'isAuthenticated'
+				'isAuthenticated', 'snackbar'
 			]),
 		},
 		methods: {

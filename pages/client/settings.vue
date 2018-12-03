@@ -1,6 +1,6 @@
 <template>
     <v-content class="content-overlay">
-        <v-container fill-height>
+        <v-container fluid fill-height>
             <v-card height="100%" width="100%" class="elevation-2">
                 <v-layout row fill-height>
                     <v-flex fill-height>
@@ -37,6 +37,22 @@
                                     </v-list-tile-action>
                                     <v-list-tile-content>
                                         Saugumas
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                                <v-list-tile  @click="section = 3">
+                                    <v-list-tile-action>
+                                        <v-icon>fas fa-map-marker-alt</v-icon>
+                                    </v-list-tile-action>
+                                    <v-list-tile-content>
+                                        Adresai
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                                <v-list-tile  @click="section = 5">
+                                    <v-list-tile-action>
+                                        <v-icon>fas fa-address-book</v-icon>
+                                    </v-list-tile-action>
+                                    <v-list-tile-content>
+                                        Telefono numeriai
                                     </v-list-tile-content>
                                 </v-list-tile>
                             </v-list>
@@ -114,6 +130,20 @@
                                     </v-form>
                                 </v-card-text>
                             </template>
+                            <template v-if="section === 3">
+                                <v-card-title class="headline font-raleway-elight text-uppercase">
+                                    Adresai
+                                </v-card-title>
+                                <v-divider></v-divider>
+                                <v-settings-address></v-settings-address>
+                            </template>
+                            <template v-if="section === 5">
+                                <v-card-title class="headline font-raleway-elight text-uppercase">
+                                    Telefono numeriai
+                                </v-card-title>
+                                <v-divider></v-divider>
+                                <v-settings-phone></v-settings-phone>
+                            </template>
                         </v-container>
                     </v-flex>
                 </v-layout>
@@ -161,6 +191,9 @@
                         current: "",
                         new: "",
                         confirmation: ""
+                    },
+                    address: {
+
                     }
                 },
                 loaders: {
@@ -254,6 +287,10 @@
                     this.loaders.passwords = false
                 })
             }
+        },
+        components: {
+            "v-settings-address": require('~/components/settings/address/SettingsAddressComponent.vue').default,
+            "v-settings-phone": require('~/components/settings/phone/SettingsPhoneComponent.vue').default,
         }
     }
 

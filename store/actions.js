@@ -18,5 +18,26 @@ export default {
         return this.$axios.get('/api/categories/get').then((response) => {
             commit('SET_CATEGORIES', response.data)
         }).catch((e) => {})
+    },
+    retrieve_client_addresses({ commit }) {
+        return this.$axios.get('/api/client/addresses').then((response) => {
+            commit('SET_ADDRESSES', response.data)
+        }).catch((e) => {})
+    },
+    retrieve_client_numbers({ commit }) {
+        return this.$axios.get('/api/client/numbers').then((response) => {
+            commit('SET_NUMBERS', response.data)
+        }).catch((e) => {})
+    },
+    retrieve_supported_countries({ commit }) {
+        return this.$axios.get('/api/addresses/supported_country_list').then((response) => {
+            commit('SET_SUPPORTED_COUNTRIES', response.data)
+        }).catch((e) => {})
+    },
+    show_message({ commit }, message) {
+        commit('SHOW_SNACKBAR', message)
+    },
+    clear_message({ commit }) {
+        commit('CLEAR_SNACKBAR')
     }
 }

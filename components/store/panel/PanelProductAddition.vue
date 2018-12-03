@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-card flat>
-            <v-form v-model="valid" @keyup.enter.native="register">
+            <v-form v-model="valid" @keyup.enter.native="save">
                 <v-card-text>
                     <v-text-field clearable v-model="fields.title"
                         label="Knygos pavadinimas" required :error-messages="error.messages['title']"></v-text-field>
