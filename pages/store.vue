@@ -15,7 +15,21 @@
         <div class="v-store-container">
             <div class="v-store-wrapper">
                 <v-navigation-drawer v-model="options.drawer" absolute>
-                    
+                    <v-list>
+                        <v-list-tile>
+                            <v-list-tile-title class="font-weight-light">
+                                Naujausios
+                            </v-list-tile-title>
+                        </v-list-tile>
+                        <v-list-group v-for="category in category_dividers" :key="category.id">
+                            <v-list-tile slot="activator">
+                                <v-list-tile-title>{{ category.label }}</v-list-tile-title>
+                            </v-list-tile>
+                            <v-list-tile @click="" v-for="child_category in treeOf(category.id)" :key="child_category.id">
+                                <v-list-tile-title class="font-weight-light ml-2">{{ child_category.label }} </v-list-tile-title>
+                            </v-list-tile>
+                        </v-list-group>
+                    </v-list>
                 </v-navigation-drawer>
                 <v-card height="100%" width="100%" color="transparent">
                     <v-layout wrap class="pa-3" justify-center>
@@ -57,15 +71,27 @@
                 options: {
                     drawer: false,
                     administrator: {
-                        panel: true
+                        panel: false
                     }
                 }
             }
         },
         computed: {
             ...mapGetters([
-                'client'
-            ])
+                'client', 'categories'
+            ]),
+            category_dividers: function() {
+                return _.filter(this.categories, function(category) {
+                    return category.parentId == null
+                })
+            }
+        },
+        methods: {
+            treeOf(parent) {
+                return _.filter(this.categories, function(category){
+                    return category.parentId == parent;
+                })
+            }
         },
         components: {
             "v-book": require("~/components/store/BookComponent.vue").default,
