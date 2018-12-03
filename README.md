@@ -24,11 +24,15 @@
 
     - [x] Profilio nustatymai
 
-    - [ ] Adresų kūrimas
+    - [x] Adresų kūrimas
 
-      > Prie adresų šablonų privalomas numerio priskyrimas.
+      - [x] Šalinimas
+      - [x] Keitimas
 
-    - [ ] Telefono numerių kūrimas
+    - [x] Telefono numerių kūrimas
+
+      - [x] Šalinimas
+      - [x] Keitimas
 
 - [ ] Krepšelio išdėstymas
 
