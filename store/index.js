@@ -18,9 +18,15 @@ const createStore = () => {
                 products: undefined,
                 categories: undefined
             },
+            store: {
+                products: undefined
+            },
             snackbar: {
                 display: false,
                 message: ''
+            },
+            cart: {
+                products: []
             }
         },
         mutations,

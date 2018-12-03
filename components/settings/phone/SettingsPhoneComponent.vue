@@ -2,6 +2,9 @@
     <v-card-text>
         <template v-if="numbers !== undefined">
             <v-data-table :items="numbers" hide-headers hide-actions>
+                <template slot="no-data">
+                    Nėra pridėtų tel. numerių.
+                </template>
                 <template slot="items" slot-scope="props">
                     <tr>
                         <td>{{ props.item.label }}</td>

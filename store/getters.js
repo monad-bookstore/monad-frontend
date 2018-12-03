@@ -11,6 +11,7 @@ export default {
     addresses: state => state.specifics.addresses,
     numbers: state => state.specifics.numbers,
     countries: state => state.specifics.countries,
-
-    snackbar: state => state.snackbar
+    store_products: state => state.store.products,
+    snackbar: state => state.snackbar,
+    cart_products: state => state.cart.products
 }

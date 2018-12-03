@@ -30,12 +30,7 @@
 		<template v-if="isAuthenticated">
 			<!-- Dešinysis meniu krepšelio peržiūrai -->
 			<v-navigation-drawer width="320" v-model="cart_drawer" fixed right clipped disable-resize-watcher>
-				<v-toolbar flat card color="transparent">
-					<v-spacer></v-spacer>
-					<v-btn icon @click="cart_drawer = !cart_drawer">
-						<v-icon>close</v-icon>
-					</v-btn>
-				</v-toolbar>
+				<v-cart v-bind:drawer.sync="cart_drawer"></v-cart>
 			</v-navigation-drawer>
 		</template>
 		<transition name="component-fade" appear>
@@ -78,12 +73,15 @@
 				this.logout_complete = true
 				Cookie.remove('bearer')
 				this.$store.commit('CLEAR_CLIENT')
+				this.$router.push('/signin')
 			}
+		},
+		components: {
+			"v-cart": require('~/components/CartDrawerComponent.vue').default
 		}
 	}
 
 </script>
-
 
 <style lang="scss">
 

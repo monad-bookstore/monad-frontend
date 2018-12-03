@@ -1,5 +1,6 @@
 const pkg = require('./package')
 import webpack from 'webpack'
+import createPersistedState from 'vuex-persistedstate'
 
 module.exports = {
   mode: 'spa',
@@ -43,7 +44,8 @@ module.exports = {
   plugins: [
     '@/plugins/vuetify',
     '@/plugins/client',
-    '@/plugins/axios-bearer'
+    '@/plugins/axios-bearer',
+    { src: '@/plugins/localStorage.js', ssr: false }
   ],
 
   /*

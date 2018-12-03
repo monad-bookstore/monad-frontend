@@ -34,6 +34,11 @@ export default {
             commit('SET_SUPPORTED_COUNTRIES', response.data)
         }).catch((e) => {})
     },
+    retrieve_store_data({ commit }) {
+        return this.$axios.get('/api/store/products').then((response) => {
+            commit('SET_STORE_PRODUCTS', response.data)
+        }).catch((e) => {})
+    },
     show_message({ commit }, message) {
         commit('SHOW_SNACKBAR', message)
     },

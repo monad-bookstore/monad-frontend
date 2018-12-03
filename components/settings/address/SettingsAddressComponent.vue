@@ -2,6 +2,9 @@
     <v-card-text>
         <template v-if="addresses !== undefined">
             <v-data-table :items="addresses" hide-headers hide-actions>
+                <template slot="no-data">
+                    Nėra pridėtų adresų.
+                </template>
                 <template slot="items" slot-scope="props">
                     <tr>
                         <td>{{ props.item.label }}</td>

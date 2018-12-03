@@ -14,7 +14,7 @@
         </v-toolbar>
         <div class="v-store-container">
             <div class="v-store-wrapper">
-                <v-navigation-drawer v-model="options.drawer" absolute>
+                <v-navigation-drawer v-model="options.drawer" absolute width="330">
                     <v-list>
                         <v-list-tile>
                             <v-list-tile-title class="font-weight-light">
@@ -33,9 +33,9 @@
                 </v-navigation-drawer>
                 <v-card height="100%" width="100%" color="transparent">
                     <v-layout wrap class="pa-3" justify-center>
-                        <v-flex class="pa-2" shrink>
+                        <v-flex class="pa-2" shrink v-for="product in store_products" :key="product.id">
                             <v-layout justify-center>
-                                <v-book :object="{}"></v-book>
+                                <v-book :product="product"></v-book>
                             </v-layout>                           
                         </v-flex>
                     </v-layout>
@@ -63,8 +63,9 @@
     export default {
 
         middleware: ['preload-client', 'authenticated'],
-        meta: {
-            remove_toolbar_elevation: true
+        mounted() {
+            this.$store.dispatch('retrieve_categories')            
+            this.$store.dispatch('retrieve_store_data')       
         },
         data() {
             return {
@@ -78,7 +79,7 @@
         },
         computed: {
             ...mapGetters([
-                'client', 'categories'
+                'client', 'categories', 'store_products'
             ]),
             category_dividers: function() {
                 return _.filter(this.categories, function(category) {

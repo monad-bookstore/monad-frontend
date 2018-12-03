@@ -1,4 +1,7 @@
 export default {
+    /**
+     * API data managing. 
+     */
     SET_CLIENT(state, client) {
         state.client = client
     },
@@ -23,6 +26,12 @@ export default {
     SET_SUPPORTED_COUNTRIES(state, countries) {
         state.specifics.countries = countries
     },
+    SET_STORE_PRODUCTS(state, products) {
+        state.store.products = products
+    },
+    /**
+     * Messaging
+     */
     SHOW_SNACKBAR(state, message) {
         state.snackbar.display = true
         state.snackbar.message = message
@@ -30,5 +39,19 @@ export default {
     CLEAR_SNACKBAR(state) {
         state.snackbar.display = false
         state.snackbar.message = ''
+    },
+    /**
+     * Cart managing.
+     */
+    CART_ADD_PRODUCTS(state, product) {
+        state.cart.products.push(product)
+    },
+    CART_REMOVE_PRODUCT(state, product) {
+        state.cart.products = _.filter(state.cart.products, function(o) {
+            return o.id !== product.id
+        })
+    },
+    CART_CLEAR(state) {
+        state.cart.products = []
     }
 }
