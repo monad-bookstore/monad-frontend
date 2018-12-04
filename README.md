@@ -53,7 +53,7 @@
   - [ ] Bylų peržiūra privilegijuotiems vartotojams
     - [ ] Bylų kontrolė
 
-- [ ] Knygos peržiūrėjimas
+- [x] Knygos peržiūrėjimas
 
 - [x] Parduotuvė
 
