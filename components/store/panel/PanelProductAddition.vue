@@ -65,30 +65,32 @@
     
     export default 
     {
-        data: () => ({
-            valid: false,
-            dialogs: {
-                author_creation: false,
-                category_creation: false
-            },
-            fields: {
-                title: '',
-                authors: [],
-                category: 0,
-                cover: '',
-                price: '',
-                pages: '',
-                description: ''
-            },
-            error: {
-                fields: ['title', 'authors', 'categoryid', 'cover', 'price', 'pages', 'description'],
-                messages: {}
-            },
-            response: {
-                display: false,
-                message: ''
+        data() {
+            return {
+                valid: false,
+                dialogs: {
+                    author_creation: false,
+                    category_creation: false
+                },
+                fields: {
+                    title: '',
+                    authors: [],
+                    category: 0,
+                    cover: '',
+                    price: '',
+                    pages: '',
+                    description: ''
+                },
+                error: {
+                    fields: ['title', 'authors', 'categoryid', 'cover', 'price', 'pages', 'description'],
+                    messages: {}
+                },
+                response: {
+                    display: false,
+                    message: ''
+                }
             }
-        }),
+        },
         computed: {
             authors_empty: function() {
                 return this.fields.authors.length < 1

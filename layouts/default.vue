@@ -51,10 +51,12 @@
 	import { mapGetters } from 'vuex'
 	import Cookie from 'js-cookie'
 	export default {
-		data: () => ({
-			cart_drawer: false,
-			logout_complete: false,
-		}),
+		data() {
+			return {
+				cart_drawer: false,
+				logout_complete: false,
+			}
+		},
 		computed: {
 			...mapGetters([
 				'isAuthenticated', 'snackbar'

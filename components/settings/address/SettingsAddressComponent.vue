@@ -49,20 +49,22 @@
     import { mapGetters } from 'vuex';
     export default 
     {
-        data: () => ({
-            remove: {
-                record: undefined,
-                dialog: false,
-            },
-            response: {
-                display: false,
-                message: ''
-            },
-            modify: {
-                dialog: false,
-                record: undefined
+        data() {
+            return {
+                remove: {
+                    record: undefined,
+                    dialog: false,
+                },
+                response: {
+                    display: false,
+                    message: ''
+                },
+                modify: {
+                    dialog: false,
+                    record: undefined
+                }
             }
-        }),
+        } ,
         mounted() {
             this.$store.dispatch('retrieve_client_addresses')
             this.$store.dispatch('retrieve_client_numbers')

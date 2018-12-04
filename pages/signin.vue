@@ -46,20 +46,22 @@
     export default
     {
         middleware: ['redirect-authorized'],
-        data: () => ({
-            loading: false,
-            valid: false,
-            username: '',
-            username_rules: [
-                v => !!v || "Įveskite vartotojo vardą.",
-            ],
-            password: '',
-            password_rules: [
-                v => !!v || 'Įveskite slaptažodį.'
-            ],
-            error_occured: false,
-            success_occured: false
-        }),
+        data() {
+            return {
+                loading: false,
+                valid: false,
+                username: '',
+                username_rules: [
+                    v => !!v || "Įveskite vartotojo vardą.",
+                ],
+                password: '',
+                password_rules: [
+                    v => !!v || 'Įveskite slaptažodį.'
+                ],
+                error_occured: false,
+                success_occured: false
+            }
+        },
         methods: 
         {
             authorize() 

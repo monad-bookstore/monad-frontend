@@ -12,7 +12,9 @@
             <v-btn small flat v-if="!cart_contains(product)" @click="cart_append(product)">Pridėti į krepšelį</v-btn>
             <v-btn small flat v-else @click="cart_remove(product)">Išimti iš krepšelio</v-btn>
             <v-spacer></v-spacer>
-            <v-btn small flat color="purple">Plačiau</v-btn>
+            <v-btn small flat color="purple" :to="`/product/${product.id}`">
+                Plačiau
+            </v-btn>
         </v-card-actions>
     </v-card>
 </template>

@@ -21,9 +21,6 @@
     import { mapGetters } from 'vuex';
     export default 
     {
-        data: () => ({
-            
-        }),
         components: {
             "v-privileged-store-items": require("~/components/store/panel/PanelProductListing.vue").default,
             "v-privileged-product-addition": require("~/components/store/panel/PanelProductAddition.vue").default
