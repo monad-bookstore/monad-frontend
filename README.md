@@ -34,7 +34,7 @@
       - [x] Šalinimas
       - [x] Keitimas
 
-- [ ] Krepšelio išdėstymas
+- [x] Krepšelio išdėstymas
 
   - [ ] Pirkinio patvirtinimas
 
@@ -53,9 +53,11 @@
   - [ ] Bylų peržiūra privilegijuotiems vartotojams
     - [ ] Bylų kontrolė
 
-- [ ] Parduotuvė
+- [ ] Knygos peržiūrėjimas
 
-  - [ ] Pagrindinis parduotuvės elementų išdėstymas
+- [x] Parduotuvė
+
+  - [x] Pagrindinis parduotuvės elementų išdėstymas
 
     - [x] Knygos elementas
 
@@ -63,19 +65,13 @@
 
       > Neužkraunamos ir nesudedamos kategorijos į navigacijos juostą.
 
-    - [ ] Knygos paieška
+    - [x] Knygos paieška
 
     - [x] Kategorijos pasirinkimas
 
-    - [ ] Knygų puslapiavimas 
+    - [ ] ~~Knygų puslapiavimas~~
 
-      > Gal tiesiog `overflow` užteks. 
-
-  - [ ] Knygų pridėjimas į krepšelį
-
-  - [ ] Knygos peržiūrėjimas
-
-    - [ ] Knygos trynimas, redagavimas
+  - [x] Knygų pridėjimas į krepšelį
 
   - [x] Parduotuvės administravimo elementų išdėstymas
 
