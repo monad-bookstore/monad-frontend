@@ -57,6 +57,9 @@
 				logout_complete: false,
 			}
 		},
+		mounted() {
+
+		},
 		computed: {
 			...mapGetters([
 				'isAuthenticated', 'snackbar'

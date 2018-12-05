@@ -32,6 +32,16 @@
                                     </span>
                                 </v-list-tile-content>
                             </v-list-tile>
+                            <v-list-tile>
+                                <v-list-tile-content>
+                                    <v-rating v-model="rating"></v-rating>
+                                </v-list-tile-content>
+                                <v-list-tile-action>
+                                    <v-btn flat small color="blue" @click="rate">
+                                        Įvertinti
+                                    </v-btn>
+                                </v-list-tile-action>
+                            </v-list-tile>
                         </v-list>
                     </v-flex>
                 </v-layout>
@@ -50,7 +60,7 @@
                     <v-flex xs12>
                         <v-card class="mt-2" flat>
                             <v-card-title class="font-raleway-regular card-header">
-                                Papildomai
+                                Papildoma informacija
                             </v-card-title>
                             <v-divider></v-divider>
                             <v-card-text>
@@ -69,9 +79,9 @@
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <!-- <v-btn flat color="indigo" @click="comments = true">
+                                <v-btn flat color="indigo" @click="comments = true">
                                     Skaityti komentarus
-                                </v-btn> -->
+                                </v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-flex>
@@ -83,7 +93,29 @@
                                 <v-icon>close</v-icon>
                             </v-btn>
                             <v-toolbar-title>Knygos „{{ product.title }}“ komentarai</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-btn flat outline color="blue" @click="writing_comment = true">
+                                Palikti komentarą
+                            </v-btn>
                         </v-toolbar>
+                        <v-card-text v-if="product.comments.length > 0">
+                            <v-list two-line>
+                                <v-list-tile v-for="comment in product.comments" :key="comment.id">
+                                    <v-list-tile-content>
+                                        <v-list-tile-title v-html="comment.message"></v-list-tile-title>
+                                        <v-list-tile-sub-title v-html="friendly_date(comment.createdAt)"></v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                    <v-list-tile-content class="align-end" v-if="$client.privileged($AccessLevel.ADMINISTRATOR, $AccessLevel.MANAGER)">
+                                        <v-btn icon flat>
+                                            <v-icon>delete</v-icon>
+                                        </v-btn>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                            </v-list>
+                        </v-card-text>
+                        <v-card-text v-else>
+                            Komentarų nėra.
+                        </v-card-text>
                     </v-card>
                 </v-dialog>
             </template>
@@ -99,6 +131,7 @@
 <script>
     
     import { mapGetters } from 'vuex'
+    import moment from 'moment'
     export default 
     {
         middleware: ['preload-client', 'authenticated'],
@@ -107,11 +140,14 @@
                 parameter: this.$route.params.id,
                 product: undefined,
                 comments: false,
+                rating: -1,
+                writing_comment: false,
             }
         },
         mounted() {
             this.$axios.get(`/api/store/product/${this.parameter}`).then((response) => {
                 this.product = response.data
+                this.rating = this.avarageRating();
             }).catch((error) => {})
         },
         computed: {
@@ -122,7 +158,7 @@
                 return _.map(this.product.authors, function(author) { 
                     return author.name + " " + author.surname; 
                 }).join(', ')
-            }
+            },
         },
         methods: {
             cart_append(product) {
@@ -136,6 +172,20 @@
             cart_contains(product) {
                 return _.find(this.cart_products, { id: product.id })
             },
+            avarageRating() {
+                const ratings = _.sumBy(this.product.ratings, "rating1")
+                return ratings > 0 ? ratings / this.product.ratings.length : 0
+            },
+            rate() {
+                const payload = {
+                    bookId: this.product.id,
+                    rating: this.rating
+                }
+                this.$axios.post(`/api/ratings/rate`, payload)
+            },
+            friendly_date(date) {
+                return moment(date).format('YYYY-MM-DD HH:mm')
+            }
         }
     }
 

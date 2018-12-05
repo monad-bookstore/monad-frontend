@@ -33,7 +33,7 @@
                         <v-spacer></v-spacer>
                         {{ price }}&euro;
                     </v-card-title>
-                    <v-btn block color="primary" class="ma-0 rounded-0" dark>
+                    <v-btn @click="payment" block color="primary" class="ma-0 rounded-0" dark>
                         Apmokėjimas
                     </v-btn>
                 </v-card>
@@ -73,6 +73,10 @@
                 const more = product.authors.length > 1 ? `+${product.authors.length - 1} kiti` : ''
                 return `${product.authors[0].name} ${product.authors[0].surname} ${more}`
             },
+            payment() {
+                this.close()
+                this.$router.push('/payment')
+            }
         }
     }
 

@@ -2,11 +2,10 @@ const pkg = require('./package')
 import webpack from 'webpack'
 import createPersistedState from 'vuex-persistedstate'
 
+const API_URL = process.env.NODE_ENV == 'production' ? 'http://91.211.246.132:5000' : 'http://localhost:5000';
+
 module.exports = {
   mode: 'spa',
-  env: {
-    API_URL: process.env.NODE_ENV == 'production' ? 'http://localhost:5000' : 'http://localhost:5000',
-  },
 
   /*
   ** Headers of the page
@@ -53,22 +52,20 @@ module.exports = {
   */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios'
+    ['@nuxtjs/axios', {
+      baseURL: API_URL
+    }]
   ],
   /*
   ** Axios module configuration
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    proxy: true
+    //proxy: true,
   },
 
   proxy: {
-    "/api": {
-        target: process.env.NODE_ENV == 'production' ? 'http://localhost:5000' : 'http://localhost:5000',
-        changeOrigin: false,
-        prependPath: false,
-    }
+    //"/api/": "http://91.211.246.132:5000"
   },
 
   /*

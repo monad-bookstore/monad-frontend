@@ -9,7 +9,6 @@
                     v-model="searchingBy" single-line hide-details clearable></v-text-field>
             </v-toolbar-items>
             <template v-if="$client.privileged($AccessLevel.ADMINISTRATOR, $AccessLevel.MANAGER)">
-                <v-spacer></v-spacer>
                 <v-toolbar-items>
                     <v-btn icon @click="options.administrator.panel = true"> 
                         <v-icon>fas fa-cog</v-icon>
