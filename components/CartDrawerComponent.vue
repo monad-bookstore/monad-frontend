@@ -8,10 +8,10 @@
 			</v-btn>
 		</v-toolbar>
         <div class="v-cart-wrapper">
-            <template v-if="cart_products !== undefined && cart_products.length > 0">
+            <template v-if="cart !== undefined && cart.length > 0">
                 <v-card>
                     <v-list two-line>
-                        <v-list-tile avatar v-for="product in cart_products" :key="product.id">
+                        <v-list-tile avatar v-for="product in cart" :key="product.id">
                             <v-list-tile-avatar>
                                 <img :src="product.coverUrl">
                             </v-list-tile-avatar>
@@ -57,10 +57,10 @@
         }},
         computed: {
             ...mapGetters([
-                'cart_products'
+                'cart'
             ]),
             price: function() {
-                return _.sumBy(this.cart_products, function(product) {
+                return _.sumBy(this.cart, function(product) {
                     return product.price
                 })
             }

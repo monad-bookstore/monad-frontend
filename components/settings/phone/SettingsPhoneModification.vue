@@ -54,12 +54,12 @@
                 }
                 
                 this.$axios.post(`/api/phone/modify/${this.modifying.id}`, payload).then((response) => {
-                    this.$store.dispatch('show_message', response.data.message)
-                    this.$store.dispatch('retrieve_client_numbers')                    
+                    this.$message.show(response.data.message)
+                    this.$store.dispatch('request_client_contacts')                    
                     this.close()
                 }).catch((error) => {
                     const message = _.get(error.response, "data.message", "Įvyko klaida keičiant įrašą.")
-                    this.$store.dispatch('show_message', message)
+                    this.$message.show(message)
                     this.close()
                 })
             }

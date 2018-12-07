@@ -72,7 +72,7 @@
                 this.$axios.post('/api/privileged/authors/create', payload).then((response) => {
                     this.response.display = true
                     this.response.message = response.data.message
-                    this.$store.dispatch('retrieve_authors')
+                    this.$store.dispatch('request_author_collection')
                     this.close()
                 })
                 .catch((error) => {

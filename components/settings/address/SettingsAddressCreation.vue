@@ -75,12 +75,12 @@
                 }
 
                 this.$axios.post('/api/addresses/create', payload).then((response) => {
-                    this.$store.dispatch('retrieve_client_addresses')
-                    this.$store.dispatch('show_message', response.data.message)                    
+                    this.$store.dispatch('request_client_addresses') 
+                    this.$message.show(response.data.message)                
                     this.close()
                 }).catch((error) => {
                     const message = _.get(error.response, "data.message", "Įvyko klaida pridedant naują įrašą.")
-                    this.$store.dispatch('show_message', message)                      
+                    this.$message.show(message)                 
                     this.close()
                 })
             }

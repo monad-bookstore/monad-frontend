@@ -1,17 +1,21 @@
-
 export default {
-    isAuthenticated: state => state.client !== undefined,
-    client: state => state.client,
+    isAuthenticated: state => state.client.self !== undefined,
+    /**
+     * Client related data getters.
+     */
+    client: state => state.client.self,
+    addresses: state => state.client.collections.addresses,
+    contacts: state => state.client.collections.contacts,
+    cart: state => state.cart.products,
+    /**
+     * Site related data getters.
+     */
     authors: state => state.data.authors,
     products: state => state.data.products,
     categories: state => state.data.categories,
-    filtered_categories: state => _.filter(state.data.categories, function(category) {
-        return category.parentId !== null
-    }),
-    addresses: state => state.specifics.addresses,
-    numbers: state => state.specifics.numbers,
-    countries: state => state.specifics.countries,
-    store_products: state => state.store.products,
+    countries: state => state.data.countries,
+    /**
+     * UI related data getters.
+     */
     snackbar: state => state.snackbar,
-    cart_products: state => state.cart.products
 }

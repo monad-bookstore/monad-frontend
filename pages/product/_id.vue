@@ -152,7 +152,7 @@
         },
         computed: {
             ...mapGetters([
-                'cart_products'
+                'cart'
             ]),
             authors: function() {
                 return _.map(this.product.authors, function(author) { 
@@ -163,14 +163,14 @@
         methods: {
             cart_append(product) {
                 this.$store.commit('CART_ADD_PRODUCTS', product)
-                this.$store.commit('SHOW_SNACKBAR', "Pridėta į krepšelį")
+                this.$store.commit('SET_MESSAGE', "Pridėta į krepšelį")
             },
             cart_remove(product) {
                 this.$store.commit('CART_REMOVE_PRODUCT', product)
-                this.$store.commit('SHOW_SNACKBAR', "Išimta iš krepšelio")
+                this.$store.commit('SET_MESSAGE', "Išimta iš krepšelio")
             },
             cart_contains(product) {
-                return _.find(this.cart_products, { id: product.id })
+                return _.find(this.cart, { id: product.id })
             },
             avarageRating() {
                 const ratings = _.sumBy(this.product.ratings, "rating1")

@@ -149,10 +149,6 @@
                 </v-layout>
             </v-card>
         </v-container>
-        <v-snackbar v-model="response.present" bottom multi-line>
-            {{ response.message }}
-            <v-btn color="pink" flat @click="response.present = false">Uždaryti</v-btn>
-        </v-snackbar>
     </v-content>
 </template>
 <script>
@@ -202,10 +198,6 @@
                     surname: false,
                     passwords: false,
                 },
-                response: {
-                    present: false,
-                    message: ''
-                }
             }
         },
         asyncData(context) {
@@ -240,13 +232,11 @@
                 }
 
                 this.$axios.post('/api/client/modify/mail', payload).then((response) => {
-                    this.response.present = true
-                    this.response.message = "El. pašto adresas pakeistas."
-                    this.$store.dispatch('retrieve_client')
+                    this.$message.show('El. pašto adresas pakeistas.')
+                    this.$store.dispatch('request_client_data')
                     this.loaders.mail = false
                 }).catch((e) => {
-                    this.response.present = true
-                    this.response.message = "Klaida keičiant el. pašto adresą."
+                    this.$message.show('Klaida keičiant el. pašto adresą.')
                     this.loaders.mail = false
                 })
             },
@@ -259,13 +249,11 @@
                 this.loaders.name = true
                 this.loaders.surname = true
                 this.$axios.post('/api/profile/modify', payload).then((response) => {
-                    this.response.present = true
-                    this.response.message = "Profilio nustatymai atnaujinti."
+                    this.$message.show('Profilio nustatymai atnaujinti.')
                     this.loaders.name = false
                     this.loaders.surname = false
                 }).catch((e) => {
-                    this.response.present = true
-                    this.response.message = "Klaida keičiant profilio nustatymus."
+                    this.$message.show('Klaida keičiant profilio nustatymus.')
                     this.loaders.name = false
                     this.loaders.surname = false
                 })
@@ -278,12 +266,10 @@
 
                 this.loaders.passwords = true
                 this.$axios.post('/api/client/modify/password', payload).then((response) => {
-                    this.response.present = true
-                    this.response.message = response.data.message
+                    this.$message.show(response.data.message)
                     this.loaders.passwords = false
                 }).catch((e) => {
-                    this.response.present = true
-                    this.response.message = e.response.data.message
+                    this.$message.show(e.response.data.message)
                     this.loaders.passwords = false
                 })
             }

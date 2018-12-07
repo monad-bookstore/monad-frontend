@@ -2,7 +2,7 @@ import Cookie from 'js-cookie'
 export default ({ store, app, $axios }, inject) => {
     inject('client', {
         reload: function() {
-            return store.dispatch('retrieve_client')
+            return store.dispatch('request_client_data')
         },
         privileged: function(...privileges) {
             const client = store.getters.client

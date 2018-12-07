@@ -21,11 +21,11 @@
                 </template>
             </v-data-table>
             <!-- Modalinis langas adresų kūrimui -->
-            <v-settings-address-creation :countries="countries" :numbers="numbers">
+            <v-settings-address-creation :countries="countries" :numbers="contacts">
                 </v-settings-address-creation>
             <!--  Modalinis langas adreso keitimui -->
             <v-settings-address-modification v-if="modify.record !== undefined" :visibility="modify.dialog" :record="modify.record"
-                v-bind:visibility.sync="modify.dialog" :countries="countries" :numbers="numbers"></v-settings-address-modification>
+                v-bind:visibility.sync="modify.dialog" :countries="countries" :numbers="contacts"></v-settings-address-modification>
             <!-- Modalinis langas adreso trynimo patvirtinimui -->
             <v-general-confirmation :visibility="remove.dialog" v-bind:visibility.sync="remove.dialog" :confirmed="remove_confirmed">
                 <template slot="body">
@@ -66,13 +66,13 @@
             }
         } ,
         mounted() {
-            this.$store.dispatch('retrieve_client_addresses')
-            this.$store.dispatch('retrieve_client_numbers')
-            this.$store.dispatch('retrieve_supported_countries')
+            this.$store.dispatch('request_client_addresses')
+            this.$store.dispatch('request_client_contacts')
+            this.$store.dispatch('request_country_collection')
         },
         computed: {
             ...mapGetters([
-                'client', 'addresses', 'numbers', 'countries'
+                'client', 'addresses', 'contacts', 'countries'
             ])
         },
         components: {
@@ -97,7 +97,7 @@
                 this.$axios.get(`/api/addresses/remove/${removing}`).then((response) => {
                     this.response.display = true
                     this.response.message = response.data.message
-                    this.$store.dispatch('retrieve_client_addresses')
+                    this.$store.dispatch('request_client_addresses')
                 }).catch((error) => {
                     const message = _.get(error.response, "data.message", "Įvyko klaida trinant įrašą.")
                     this.response.display = true

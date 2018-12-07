@@ -9,7 +9,7 @@
                 <v-subheader>Pirkiniai</v-subheader>
                 <v-card-text>
                     <v-list two-line>
-                        <v-list-tile avatar v-for="product in cart_products" :key="product.id">
+                        <v-list-tile avatar v-for="product in cart" :key="product.id">
                             <v-list-tile-avatar>
                                 <img :src="product.coverUrl">
                             </v-list-tile-avatar>
@@ -76,8 +76,8 @@
             }
         },
         mounted() {
-            this.$store.dispatch('retrieve_client_addresses')
-            this.$store.dispatch('retrieve_client_numbers')
+            this.$store.dispatch('request_client_addresses')
+            this.$store.dispatch('request_client_contacts')
         },
         methods: {
             author(product) {
@@ -91,7 +91,7 @@
             create() {
                 const payload = {
                     addressId: this.fields.addressId,
-                    books: _.map(this.cart_products, "id")
+                    books: _.map(this.cart, "id")
                 }
 
                 this.$axios.post('/api/orders/create', payload).then((response) => {
@@ -108,25 +108,25 @@
                         }
                     })
 
-                    this.$store.commit('SHOW_SNACKBAR', message)
+                    this.$store.commit('SET_MESSAGE', message)
                 })
             }
         },
         computed: {
             ...mapGetters([
-                'addresses', 'numbers', 'cart_products'
+                'addresses', 'contacts', 'cart'
             ]),
             hasNoAddresses: function() {
                 return this.addresses === undefined || this.addresses.length < 1
             },
             price: function() {
-                return _.sumBy(this.cart_products, function(product) {
+                return _.sumBy(this.cart, function(product) {
                     return product.price
                 })
             }
         },
         watch: {
-            cart_products(changed, _) {
+            cart(changed, _) {
                 if (changed === undefined || changed.length < 1)
                     this.$router.push('/store')
             }

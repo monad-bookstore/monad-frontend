@@ -44,7 +44,8 @@ module.exports = {
     '@/plugins/vuetify',
     '@/plugins/client',
     '@/plugins/axios-bearer',
-    { src: '@/plugins/localStorage.js', ssr: false }
+    '@/plugins/messaging.js', 
+    { src: '@/plugins/storage/persist-data.js', ssr: false },
   ],
 
   /*

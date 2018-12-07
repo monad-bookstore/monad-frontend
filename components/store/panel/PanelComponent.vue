@@ -46,9 +46,9 @@
              * Function used to combine multiple required requests.
              */
             preload() {
-                this.$store.dispatch('retrieve_authors')
-                this.$store.dispatch('retrieve_products')
-                this.$store.dispatch('retrieve_categories')
+                this.$store.dispatch('request_author_collection')
+                this.$store.dispatch('request_product_collection')
+                this.$store.dispatch('request_category_collection')
             },
         },
         computed: {

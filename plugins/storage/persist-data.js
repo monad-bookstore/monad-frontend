@@ -1,12 +1,10 @@
-// ~/plugins/localStorage.js
-
 import createPersistedState from 'vuex-persistedstate'
 
 export default ({store}) => {
   window.onNuxtReady(() => {
     createPersistedState({
         key: 'monad-cart',
-        paths: ["cart"]
+        paths: ["cart"],
     })(store)
   })
 }

@@ -7,17 +7,26 @@ import getters from './getters'
 const createStore = () => {
     return new Vuex.Store({
         state: {
-            client: undefined,
-            specifics: {
-                addresses: undefined,
-                numbers: undefined,
-                countries: undefined
+            /**
+             * Base client information object.
+             */
+            client: {
+                self: undefined,
+                collections: {
+                    addresses: undefined,
+                    contacts: undefined,
+                }
             },
+            /**
+             * Site containing data.
+             */
             data: {
                 authors: undefined,
                 products: undefined,
-                categories: undefined
+                categories: undefined,
+                countries: undefined
             },
+
             store: {
                 products: undefined
             },

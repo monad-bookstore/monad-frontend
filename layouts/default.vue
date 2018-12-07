@@ -36,14 +36,7 @@
 		<transition name="component-fade" appear>
 			<nuxt/>
 		</transition>
-		<v-snackbar v-model="logout_complete" bottom>
-            Atsijungta
-            <v-btn color="pink" flat @click="logout_complete = false">Uždaryti</v-btn>
-		</v-snackbar>
-		<v-snackbar v-model="snackbar.display" bottom>
-            {{ snackbar.message }}
-            <v-btn color="pink" flat @click="$store.dispatch('clear_message')">Uždaryti</v-btn>
-		</v-snackbar>
+		<v-global-snackbar></v-global-snackbar>
 	</v-app>
 </template>
 <script>
@@ -51,6 +44,7 @@
 	import { mapGetters } from 'vuex'
 	import Cookie from 'js-cookie'
 	export default {
+
 		data() {
 			return {
 				cart_drawer: false,
@@ -75,14 +69,15 @@
 				}
 			},
 			logout() {
-				this.logout_complete = true
+				this.$message.show('Atsijungta!')
 				Cookie.remove('bearer')
 				this.$store.commit('CLEAR_CLIENT')
 				this.$router.push('/signin')
 			}
 		},
 		components: {
-			"v-cart": require('~/components/CartDrawerComponent.vue').default
+			"v-cart": require('~/components/CartDrawerComponent.vue').default,
+			"v-global-snackbar":  require('~/components/GlobalSnackbar.vue').default
 		}
 	}
 

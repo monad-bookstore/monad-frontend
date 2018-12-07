@@ -122,7 +122,7 @@
                 this.$axios.post('/api/privileged/books/create', payload).then((response) => {
                     this.response.display = true
                     this.response.message = response.data.message
-                    this.$store.dispatch('retrieve_products')
+                    this.$store.dispatch('request_product_collection')
                 })
                 .catch((error) => {
                     const data = _.mapKeys(error.response.data, function(v, k) {

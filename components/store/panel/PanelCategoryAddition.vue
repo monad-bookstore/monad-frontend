@@ -79,7 +79,7 @@
                 this.$axios.post('/api/privileged/categories/create', payload).then((response) => {
                     this.response.display = true
                     this.response.message = response.data.message
-                    this.$store.dispatch('retrieve_categories')
+                    this.$store.dispatch('request_category_collection')
                     this.close()                    
                 })
                 .catch((error) => {

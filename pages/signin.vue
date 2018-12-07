@@ -77,14 +77,14 @@
                     const key = _.get(response.data, 'authorizationKey', undefined)
                     if (key !== undefined) {
                         Cookie.set('bearer', key, { expires: 7 })
-                        this.success_occured = true
+                        this.$message.show("Sėkmingai prisijungta! Peradresuojama...")
                         setTimeout(() => {
                             this.$router.push('/')
-                        }, 2000)
+                        }, 1200)
                     }
                 }).catch((e) => {
                     this.loading = false
-                    this.error_occured = true
+                    this.$message.show("Neteisingas varototjo vardas arba slaptažodis.")
                 });
             }
         }

@@ -1,7 +1,7 @@
 <template>
     <v-card-text>
-        <template v-if="numbers !== undefined">
-            <v-data-table :items="numbers" hide-headers hide-actions>
+        <template v-if="contacts !== undefined">
+            <v-data-table :items="contacts" hide-headers hide-actions>
                 <template slot="no-data">
                     Nėra pridėtų tel. numerių.
                 </template>
@@ -57,11 +57,11 @@
             }
         },
         mounted() {
-            this.$store.dispatch('retrieve_client_numbers')
+            this.$store.dispatch('request_client_contacts')
         },
         computed: {
             ...mapGetters([
-                'client', 'numbers'
+                'client', 'contacts'
             ])
         },
         components: {
@@ -84,12 +84,12 @@
                     return
 
                 this.$axios.get(`/api/phone/remove/${removing}`).then((response) => {
-                    this.$store.dispatch('show_message', response.data.message)
-                    this.$store.dispatch('retrieve_client_numbers')
-                    this.$store.dispatch('retrieve_client_addresses')
+                    this.$message.show(response.data.message)
+                    this.$store.dispatch('request_client_contacts')
+                    this.$store.dispatch('request_client_addresses')
                 }).catch((error) => {
                     const message = _.get(error.response, "data.message", "Įvyko klaida trinant įrašą.")
-                    this.$store.dispatch('show_message', message)                    
+                    this.$message.show(message)
                 })
             }
         }

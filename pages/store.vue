@@ -6,7 +6,7 @@
             <v-spacer></v-spacer>
             <v-toolbar-items>
                 <v-text-field class="v-store-search-field pa-0 mt-2" append-icon="search" label="Ieškoti knygos" 
-                    v-model="searchingBy" single-line hide-details clearable></v-text-field>
+                    v-model="searchedBy" single-line hide-details clearable></v-text-field>
             </v-toolbar-items>
             <template v-if="$client.privileged($AccessLevel.ADMINISTRATOR, $AccessLevel.MANAGER)">
                 <v-toolbar-items>
@@ -15,7 +15,6 @@
                     </v-btn>
                 </v-toolbar-items>
             </template>
-            
         </v-toolbar>
         <div class="v-store-container">
             <div class="v-store-wrapper">
@@ -49,11 +48,11 @@
                                     </v-btn>
                                     <v-card>
                                         <v-card-title class="pa-1">
-                                            <v-btn icon @click="filteringBy = 2">
+                                            <v-btn icon @click="filteredBy = 2">
                                                 <v-icon>fas fa-sort-amount-up</v-icon>
                                             </v-btn>
                                             <v-spacer></v-spacer>
-                                            <v-btn icon @click="filteringBy = 3">
+                                            <v-btn icon @click="filteredBy = 3">
                                                 <v-icon class="fa-rotate-180">fas fa-sort-amount-up</v-icon>
                                             </v-btn>
                                         </v-card-title>
@@ -61,8 +60,8 @@
                                 </v-menu>
                             </v-toolbar>
                         </v-flex>
-                        <template v-if="products !== undefined && products.length > 0">
-                            <v-flex class="pa-2" shrink v-for="product in products" :key="product.id">
+                        <template v-if="collections.products !== undefined && collections.products.length > 0">
+                            <v-flex class="pa-2" shrink v-for="product in collections.products" :key="product.id">
                                 <v-layout justify-center>
                                     <v-book :product="product"></v-book>
                                 </v-layout>                           
@@ -72,7 +71,7 @@
                             <v-layout row justify-center>
                                     <v-card flat color="transparent">
                                         <v-card-text>
-                                            <template v-if="categorizedBy == -1 && (searchingBy === undefined || searchingBy === '')">
+                                            <template v-if="categorizedBy == -1 && (searchedBy === undefined || searchedBy === '')">
                                                 Knygų parduotuvėje nėra.
                                             </template>
                                             <template v-else-if="categorizedBy != -1">
@@ -89,7 +88,7 @@
                 </v-card>
             </div>
         </div>
-        <v-dialog v-if="$client.privileged($AccessLevel.ADMINISTRATOR, $AccessLevel.MANAGER)"  
+        <!-- <v-dialog v-if="$client.privileged($AccessLevel.ADMINISTRATOR, $AccessLevel.MANAGER)"  
             v-model="options.administrator.panel" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
             <v-card tile>
                 <v-toolbar card color="white">
@@ -101,7 +100,7 @@
                 <v-privileged-panel :client="client">
                     </v-privileged-panel>
             </v-card>
-        </v-dialog>
+        </v-dialog> -->
     </v-content>
 </template>
 <script>
@@ -109,10 +108,10 @@
     import { mapGetters } from 'vuex';
     export default {
 
-        middleware: ['preload-client', 'authenticated'],
+        middleware: ['preload-client', 'authenticated', 'preload-data'],
         mounted() {
-            this.$store.dispatch('retrieve_categories')            
-            this.$store.dispatch('retrieve_store_data')       
+            //this.$store.dispatch('retrieve_categories')            
+            //this.$store.dispatch('retrieve_store_data')       
         },
         data() {
             return {
@@ -123,15 +122,17 @@
                         panel: false
                     }
                 },
-                products: [],
-                filteringBy: 1,
+                collections: {
+                    products: this.products
+                },
+                filteredBy: 1,
                 categorizedBy: -1,
-                searchingBy: ''
+                searchedBy: ''
             }
         },
         computed: {
             ...mapGetters([
-                'client', 'categories', 'store_products'
+                'client', 'categories', 'products'
             ]),
             category_dividers: function() {
                 return _.filter(this.categories, function(category) {
@@ -148,13 +149,13 @@
             search(input) {
                 this.categorizedBy = -1;
                 if (input === undefined || input === null || input.length < 3) {
-                    this.products = this.store_products
+                    this.collections.products = this.products
                     return
                 }
 
                 this.categorizedBy = -1
                 const searching = input.toLowerCase()
-                this.products = _.filter(this.store_products, function(product) {
+                this.collections.products = _.filter(this.products, function(product) {
                     const authors_match = _.sumBy(product.authors, ({name, surname}) =>
                         name != null && name != undefined && name.toLowerCase().indexOf(searching) > -1 ||
                         surname != null && surname != undefined && surname.toLowerCase().indexOf(searching) > -1)
@@ -163,7 +164,7 @@
                 })
             },
             sortBy(products) {
-                switch(this.filteringBy) {
+                switch(this.filteredBy) {
                     // Filtering by creation date.
                     case 1:
                         return _.orderBy(products, ['id'], ['desc'])
@@ -175,35 +176,34 @@
                         return _.orderBy(products, ['price'], ['asc'])
                 }
 
-                this.filteringBy = 1
+                this.filteredBy = 1
                 return _.orderBy(products, ['id'], ['desc'])
             },
             categorizeBy(category) {
                 if (category < 1) {
-                    this.products = this.store_products
+                    this.collections.products = this.products
                     return
                 }
 
-                this.products = _.filter(this.store_products, function(product) {
+                this.collections.products = _.filter(this.products, function(product) {
                     return product.categoryId == category
                 })
             }
         },
         components: {
-            "v-book": require("~/components/store/BookComponent.vue").default,
-            "v-privileged-panel": require("~/components/store/panel/PanelComponent.vue").default
+            "v-book": require("~/components/store/BookComponent.vue").default
         },
         watch: {
-            store_products(changed, _) {
-                this.products = this.sortBy(changed)
+            products(changed, _) {
+                this.collections.products = this.sortBy(changed)
             },
-            filteringBy(changed, _) {
-                this.products = this.sortBy(this.products)
+            filteredBy(changed, _) {
+                this.collections.products = this.sortBy(this.products)
             },
             categorizedBy(changed, _) {
                 this.categorizeBy(changed)
             },
-            searchingBy(changed, _) {
+            searchedBy(changed, _) {
                 this.search(changed)
             }
         }
