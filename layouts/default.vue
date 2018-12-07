@@ -18,6 +18,7 @@
 					<v-btn flat :to="'/orders'">Užsakymai</v-btn>
 				</v-toolbar-items>
 				<v-spacer></v-spacer>
+					<v-btn flat :to="'/administrative'">Administravimas</v-btn>
 					<v-btn flat :to="'/client/settings'">Nustatymai</v-btn>
 					<v-btn flat @click="cart_drawer = !cart_drawer" class="ma-0">
 						Krepšelis
@@ -47,8 +48,7 @@
 
 		data() {
 			return {
-				cart_drawer: false,
-				logout_complete: false,
+				cart_drawer: false
 			}
 		},
 		mounted() {
@@ -56,7 +56,7 @@
 		},
 		computed: {
 			...mapGetters([
-				'isAuthenticated', 'snackbar'
+				'isAuthenticated'
 			]),
 		},
 		methods: {

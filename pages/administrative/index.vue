@@ -5,7 +5,7 @@
 
     export default {
         middleware: ['preload-client', 'authenticated'],
-        layout: 'administrative'        
+        layout: 'administrative', 
     }
 
 </script>

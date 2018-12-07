@@ -19,7 +19,7 @@
         <div class="v-store-container">
             <div class="v-store-wrapper">
                 <v-navigation-drawer v-model="options.drawer" absolute width="330" floating class="v-store-drawer">
-                    <v-list class="v-store-categories">
+                    <v-list>
                         <v-list-tile>
                             <v-list-tile-title class="font-weight-light">
                                 Naujausios

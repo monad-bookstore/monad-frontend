@@ -8,7 +8,7 @@ export default ({ store, app, $axios }, inject) => {
             const client = store.getters.client
             const privilege = _.get(client, "accessFlag", -1)
             return privileges.includes(privilege)
-        }
+        },
     }),
     inject('AccessLevel', {
         ADMINISTRATOR: 1,
