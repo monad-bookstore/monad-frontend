@@ -5,10 +5,6 @@
                 <span class="headline">Autoriaus kūrimas</span>
             </v-card-title>
             <v-card-text>
-                <v-snackbar v-model="response.display" top>
-                    {{ response.message }}
-                    <v-btn color="pink" flat @click="response.display = false">Uždaryti</v-btn>
-                </v-snackbar>
                 <v-form @keyup.enter.native="create">
                     <v-text-field clearable v-model="fields.name"
                         label="Autoriaus vardas" required></v-text-field>

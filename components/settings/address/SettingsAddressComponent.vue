@@ -38,10 +38,6 @@
                 <v-progress-circular indeterminate></v-progress-circular>
             </v-layout>
         </template>
-        <v-snackbar v-model="response.display" bottom>
-            {{ response.message }}
-            <v-btn color="pink" flat @click="response.display = false">Uždaryti</v-btn>
-        </v-snackbar>
     </v-card-text>   
 </template>
 <script>
@@ -95,13 +91,11 @@
                     return
 
                 this.$axios.get(`/api/addresses/remove/${removing}`).then((response) => {
-                    this.response.display = true
-                    this.response.message = response.data.message
                     this.$store.dispatch('request_client_addresses')
+                    this.$message.show(response.data.message)
                 }).catch((error) => {
                     const message = _.get(error.response, "data.message", "Įvyko klaida trinant įrašą.")
-                    this.response.display = true
-                    this.response.message = message
+                    this.$message.show(message)
                 })
             }
         }

@@ -8,13 +8,13 @@
                 <v-text-field class="v-store-search-field pa-0 mt-2" append-icon="search" label="Ieškoti knygos" 
                     v-model="searchedBy" single-line hide-details clearable></v-text-field>
             </v-toolbar-items>
-            <template v-if="$client.privileged($AccessLevel.ADMINISTRATOR, $AccessLevel.MANAGER)">
+            <!-- <template v-if="$client.privileged($AccessLevel.ADMINISTRATOR, $AccessLevel.MANAGER)">
                 <v-toolbar-items>
                     <v-btn icon @click="options.administrator.panel = true"> 
                         <v-icon>fas fa-cog</v-icon>
                     </v-btn>
                 </v-toolbar-items>
-            </template>
+            </template> -->
         </v-toolbar>
         <div class="v-store-container">
             <div class="v-store-wrapper">
