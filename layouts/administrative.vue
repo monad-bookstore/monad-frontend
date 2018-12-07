@@ -17,7 +17,7 @@
                             Peržiūrėti sąrašą
                         </v-list-tile-content>
                     </v-list-tile>
-                    <v-list-tile>
+                    <v-list-tile @click="redirect('/administrative/clients/create')">
                         <v-list-tile-action>
                             <v-icon>person_add</v-icon>
                         </v-list-tile-action>
@@ -41,7 +41,7 @@
                         </v-list-tile-action>
                         <v-list-tile-title>Knygos</v-list-tile-title>
                     </v-list-tile>
-                    <v-list-tile>
+                    <v-list-tile @click="redirect('/administrative/books')">
                         <v-list-tile-action>
                             <v-icon>list</v-icon>
                         </v-list-tile-action>
@@ -110,7 +110,7 @@
 		data: function() {
             return {
                 navigator: {
-                    display: false,
+                    display: true,
                 },
             }
         },

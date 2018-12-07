@@ -28,10 +28,6 @@
                             </v-btn>
                         </v-form>
                     </v-card>
-                    <v-snackbar v-model="display" bottom>
-                        {{ message }}
-                        <v-btn color="pink" flat @click="display = false">Uždaryti</v-btn>
-                    </v-snackbar>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -68,8 +64,6 @@
                     password: [],
                     mail: [],
                 },
-                display: false,
-                message: ''
             }
         },
         methods: {
@@ -83,11 +77,10 @@
                 this.$axios.post("/api/client/register", payload).then((response) => {
                     const data = response.data
                     if(_.has(data, "message")) {
-                        this.display = true
-                        this.message = data.message
+                        this.$message.show(data.message)
                         setTimeout(() => {
                             this.$router.push("/signin")
-                        }, 2000)
+                        }, 1200)
                     }
                 }).catch((e) => {
                     const data = _.mapKeys(e.response.data, function(v, k) {
@@ -97,15 +90,14 @@
                     if (_.has(data, "username")) {
                         this.errors.username = data.username
                     }
-                    else if (_.has(data, "mail")) {
+                    else if (_.has(data, "email")) {
                         this.errors.mail = data.mail
                     }
                     else if (_.has(data, "password")) {
                         this.errors.password = data.password
                     }
                     else if(_.has(data, "message")) {
-                        this.errors.display = true
-                        this.errors.message = data.message
+                        this.$message.show(data.message)
                     }
 
                     setTimeout(() => {

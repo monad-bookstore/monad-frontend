@@ -4,6 +4,8 @@ import mutations from './mutations'
 import actions from './actions'
 import getters from './getters'
 
+import administrative from './modules/administrative'
+
 const createStore = () => {
     return new Vuex.Store({
         state: {
@@ -26,21 +28,29 @@ const createStore = () => {
                 categories: undefined,
                 countries: undefined
             },
-
-            store: {
-                products: undefined
-            },
+            /**
+             * Interface
+             */
             snackbar: {
                 display: false,
                 message: ''
             },
+            /**
+             * Session cart.
+             */
             cart: {
                 products: []
-            }
+            },
         },
         mutations,
         actions,
-        getters
+        getters,
+        modules: {
+            administrative: {
+                namespaced: true,
+                ...administrative
+            }
+        }
     })
 };
 

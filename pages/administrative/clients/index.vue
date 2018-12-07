@@ -9,8 +9,7 @@
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
-                    <v-data-table :headers="table.headers" :search="search"
-                        :items="clients" v-model="table.selected"  item-key="username" :pagination.sync="table.pagination">
+                    <v-data-table :items="clients" :headers="table.headers" :search="search" :pagination.sync="table.pagination">
                         <template slot="no-results">
                             Pagal paieškos terminą rezultatų nerasta.
                         </template>
@@ -69,16 +68,14 @@
 <script>
 
     import moment from 'moment'
+    import { mapGetters } from 'vuex'
     export default {
-        middleware: ['preload-client', 'authenticated'],
+        middleware: ['preload-client', 'authenticated', 'preload-data', 'preload-administrative-data'],
         layout: 'administrative',
-        data: function() {
+        data() {
             return {
-                clients: [],
                 table: {
-                    pagination: {
-                        sortBy: 'username'
-                    },
+                    pagination: {},
                     selected: [],
                     headers: [
                         { text: "ID", value: 'id' },
@@ -96,15 +93,12 @@
                 search: ''
             }
         },
-        mounted() {
-            this.request_clients()
+        computed: {
+            ...mapGetters('administrative', [
+                'clients'
+            ])
         },
         methods: {
-            request_clients() {
-                this.$axios.get('/api/privileged/clients/get').then((response) => {
-                    this.clients = response.data
-                })
-            },
             friendly_date(date) {
                 return moment(date).format('YYYY-MM-DD')
             },
@@ -128,7 +122,7 @@
                     return
 
                 this.$axios.get(`/api/privileged/clients/remove/${cid}`).then((response) => {
-                    this.request_clients()
+                    this.$store.dispatch('administrative/request_client_collection')
                 })
             },
             save(client) {
@@ -136,8 +130,6 @@
                     this.$message.show('Išsaugota.')
                 })
             },
-            
-        
         },
         components: {
             "v-general-confirmation": require('~/components/general/GeneralConfirmationDialog.vue').default

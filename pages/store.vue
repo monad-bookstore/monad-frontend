@@ -107,12 +107,7 @@
 
     import { mapGetters } from 'vuex';
     export default {
-
         middleware: ['preload-client', 'authenticated', 'preload-data'],
-        mounted() {
-            //this.$store.dispatch('retrieve_categories')            
-            //this.$store.dispatch('retrieve_store_data')       
-        },
         data() {
             return {
                 options: {
