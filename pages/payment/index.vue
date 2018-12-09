@@ -1,6 +1,6 @@
 <template>
     <v-content class="content-overlay">
-        <v-container>
+        <v-container fluid>
             <v-card>
                 <v-card-title class="card-title">
                     Apmokėjimas
@@ -23,11 +23,6 @@
                                 </v-btn>
                             </v-list-tile-content>
                         </v-list-tile>
-                        <v-list-tile>
-                            <v-list-tile-content>
-                                Galutinė kaina {{ price }}&euro;
-                            </v-list-tile-content>
-                        </v-list-tile>
                     </v-list>
                 </v-card-text>
                 <v-divider></v-divider>
@@ -43,6 +38,10 @@
                         label="Apmokėjimo būdas">
                     </v-select>
                 </v-card-text>
+                <v-divider></v-divider>
+                <v-card-title class="card-title">
+                    Galutinė pirkinio kaina: {{ price }}&euro;
+                </v-card-title>
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -71,7 +70,7 @@
                     'Bankiniu pavedimu', 'PayPal', 'PaySera', 'Skrill', 'WebMoney'
                 ],
                 error: {
-                    fields: ['addressId', 'books']
+                    fields: ['addressid', 'books']
                 }
             }
         },
@@ -95,20 +94,20 @@
                 }
 
                 this.$axios.post('/api/orders/create', payload).then((response) => {
-                    
+                    this.$router.push(`/payment/success?order=${response.data.orderId}`)
                 }).catch((error) => {
                     const data = _.mapKeys(error.response.data, function(v, k) {
                         return k.toLowerCase()
                     })
 
                     let message = "Klaida kuriant užsakymą. Bandykite iš naujo."
-                    _.each(error.fields, function(field) {
+                    _.each(this.error.fields, function(field) {
                         if (_.has(data, field)) {
-                            message = data.field[0]
+                            message = data[field][0]
                         }
                     })
 
-                    this.$store.commit('SET_MESSAGE', message)
+                    this.$message.show(message)
                 })
             }
         },

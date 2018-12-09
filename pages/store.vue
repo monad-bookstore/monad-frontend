@@ -20,17 +20,17 @@
             <div class="v-store-wrapper">
                 <v-navigation-drawer v-model="options.drawer" absolute width="330" floating class="v-store-drawer">
                     <v-list>
-                        <v-list-tile>
+                        <v-list-tile @click="newest">
                             <v-list-tile-title class="font-weight-light">
-                                Naujausios
+                                Naujausios knygos
                             </v-list-tile-title>
                         </v-list-tile>
-                        <v-list-group v-for="category in category_dividers" :key="category.id">
+                        <v-list-group v-for="cat in category_dividers" :key="category.id">
                             <v-list-tile slot="activator">
-                                <v-list-tile-title>{{ category.label }}</v-list-tile-title>
+                                <v-list-tile-title>{{ cat.label }}</v-list-tile-title>
                             </v-list-tile>
-                            <v-list-tile @click="categorizedBy = child_category.id" v-for="child_category in treeOf(category.id)" 
-                                :key="child_category.id" :value="categorizedBy == child_category.id" active-class="v-store-category-active">
+                            <v-list-tile @click="set_category(child_category)" v-for="child_category in treeOf(cat.id)" 
+                                :key="child_category.id" :value="category.current !== undefined && category.current.id == child_category.id" active-class="v-store-category-active">
                                 <v-list-tile-title class="font-weight-light">{{ child_category.label }}</v-list-tile-title>
                             </v-list-tile>
                         </v-list-group>
@@ -40,6 +40,19 @@
                     <v-layout wrap justify-center>
                         <v-flex xs12 shrink class="mb-5">
                             <v-toolbar color="grey lighten-5 elevation-0">
+                                <v-toolbar-title>
+                                <v-breadcrumbs :items="category_breadcrumbs">
+                                    <v-breadcrumbs-item slot="item" slot-scope="props">
+                                        <template v-if="props.item.reset">
+                                            <a @click="reset_category">{{ props.item.text.toUpperCase() }}</a>
+                                        </template>
+                                        <template v-else>
+                                            {{ props.item.text.toUpperCase() }}
+                                        </template>
+                                    </v-breadcrumbs-item>
+                                    <v-icon slot="divider">chevron_right</v-icon>
+                                </v-breadcrumbs>
+                                </v-toolbar-title>
                                 <v-spacer></v-spacer>
                                 <v-menu v-model="options.sorter" :close-on-content-click="true"
                                     :nudge-bottom="40">
@@ -48,11 +61,11 @@
                                     </v-btn>
                                     <v-card>
                                         <v-card-title class="pa-1">
-                                            <v-btn icon @click="filteredBy = 2">
+                                            <v-btn icon @click="sortedBy = 2">
                                                 <v-icon>fas fa-sort-amount-up</v-icon>
                                             </v-btn>
                                             <v-spacer></v-spacer>
-                                            <v-btn icon @click="filteredBy = 3">
+                                            <v-btn icon @click="sortedBy = 3">
                                                 <v-icon class="fa-rotate-180">fas fa-sort-amount-up</v-icon>
                                             </v-btn>
                                         </v-card-title>
@@ -71,10 +84,10 @@
                             <v-layout row justify-center>
                                     <v-card flat color="transparent">
                                         <v-card-text>
-                                            <template v-if="categorizedBy == -1 && (searchedBy === undefined || searchedBy === '')">
+                                            <template v-if="category.current === undefined && (searchedBy === undefined || searchedBy === '')">
                                                 Knygų parduotuvėje nėra.
                                             </template>
-                                            <template v-else-if="categorizedBy != -1">
+                                            <template v-else-if="category.current != undefined">
                                                 Atsiprašome, šioje kategorijoje knygų nėra.
                                             </template>
                                             <template v-else>
@@ -88,19 +101,6 @@
                 </v-card>
             </div>
         </div>
-        <!-- <v-dialog v-if="$client.privileged($AccessLevel.ADMINISTRATOR, $AccessLevel.MANAGER)"  
-            v-model="options.administrator.panel" fullscreen hide-overlay transition="dialog-bottom-transition" scrollable>
-            <v-card tile>
-                <v-toolbar card color="white">
-                    <v-btn icon @click="options.administrator.panel = false">
-                        <v-icon>close</v-icon>
-                    </v-btn>
-                    <v-toolbar-title>Parduotuvės valdymas</v-toolbar-title>
-                </v-toolbar>
-                <v-privileged-panel :client="client">
-                    </v-privileged-panel>
-            </v-card>
-        </v-dialog> -->
     </v-content>
 </template>
 <script>
@@ -118,37 +118,80 @@
                     }
                 },
                 collections: {
-                    products: this.products
+                    products: []
                 },
-                filteredBy: 1,
-                categorizedBy: -1,
-                searchedBy: ''
+                sortedBy: 1,
+                searchedBy: '',
+                category: {
+                    current: undefined,
+                    parent: undefined
+                }
             }
+        },
+        beforeRouteEnter (to, from, next) {
+            next(vm => {
+                vm.collections.products = vm.products
+                next();
+            })
         },
         computed: {
             ...mapGetters([
                 'client', 'categories', 'products'
             ]),
+            /**
+             * Get categories that have no parent.
+             */
             category_dividers: function() {
                 return _.filter(this.categories, function(category) {
                     return category.parentId == null
                 })
+            },
+            /**
+             * Breadcrumbs for category navigation.
+             */
+            category_breadcrumbs: function() {
+                let crumbs = [{ 
+                    text: "Visos kategorijos", 
+                    disabled: this.category.current === undefined, 
+                    reset: true
+                }]
+
+                if (this.category.current !== undefined) {
+                    crumbs.push({
+                        text: this.category.parent.label,
+                        disabled: true,
+                    })
+                }
+
+                if (this.category.current !== undefined) {
+                    crumbs.push({
+                        text: this.category.current.label,
+                        disabled: true,
+                    })
+                }
+
+                return crumbs
             }
         },
         methods: {
+            /**
+             * Return all categories related to parent.
+             */
             treeOf(parent) {
                 return _.filter(this.categories, function(category){
                     return category.parentId == parent;
                 })
             },
+            /**
+             * Update products based on search input.
+             */
             search(input) {
-                this.categorizedBy = -1;
+                this.category.current = undefined;
                 if (input === undefined || input === null || input.length < 3) {
                     this.collections.products = this.products
                     return
                 }
 
-                this.categorizedBy = -1
                 const searching = input.toLowerCase()
                 this.collections.products = _.filter(this.products, function(product) {
                     const authors_match = _.sumBy(product.authors, ({name, surname}) =>
@@ -158,8 +201,11 @@
                     return ((product.title !== null && product.title !== undefined) && product.title.toLowerCase().indexOf(searching) > -1) || authors_match > 0
                 })
             },
+            /**
+             * Sort products based on sorting choice.
+             */
             sortBy(products) {
-                switch(this.filteredBy) {
+                switch(this.sortedBy) {
                     // Filtering by creation date.
                     case 1:
                         return _.orderBy(products, ['id'], ['desc'])
@@ -171,18 +217,37 @@
                         return _.orderBy(products, ['price'], ['asc'])
                 }
 
-                this.filteredBy = 1
+                this.sortedBy = 1
                 return _.orderBy(products, ['id'], ['desc'])
             },
-            categorizeBy(category) {
-                if (category < 1) {
-                    this.collections.products = this.products
-                    return
-                }
-
+            /**
+             * Sets current and parent categories.
+             * Filters products by category.
+             */
+            set_category(category) {
+                this.options.drawer = false
+                this.category.current = category
+                this.category.parent = _.find(this.categories, { id: category.parentId })
                 this.collections.products = _.filter(this.products, function(product) {
-                    return product.categoryId == category
+                    return product.categoryId == category.id
                 })
+            },
+            /**
+             * Resets current and parent categories, also 
+             * resets product collection.
+             */
+            reset_category(category) {
+                this.collections.products = this.products
+                this.category.current = undefined
+                this.category.parent = undefined
+            },
+            /**
+             * Sorts products and resets category selection.
+             */
+            newest() {
+                this.sortBy = 1
+                this.reset_category()
+                this.options.drawer = false
             }
         },
         components: {
@@ -192,11 +257,8 @@
             products(changed, _) {
                 this.collections.products = this.sortBy(changed)
             },
-            filteredBy(changed, _) {
+            sortedBy(changed, _) {
                 this.collections.products = this.sortBy(this.products)
-            },
-            categorizedBy(changed, _) {
-                this.categorizeBy(changed)
             },
             searchedBy(changed, _) {
                 this.search(changed)
@@ -207,10 +269,6 @@
 </script>
 <style lang="scss">
 
-    .store-toolbar {
-        border-top: 1px solid rgba($color: #000000, $alpha: 0.1);
-    }
-
     .v-store-container {
         height: 100%;
         padding-top: 51px;
@@ -220,16 +278,8 @@
         }
     }
 
-    .v-store-category-active {
-        background-color: rgba($color: #000000, $alpha: 0.1) !important;
-    }
-
-    .v-store-search-field {
-        width: 220px !important;
-    }
-
-    .v-store-drawer {
-        border-right: 1px solid rgba($color: #000000, $alpha: 0.3);
-    }
-
+    .store-toolbar { border-top: 1px solid rgba($color: #000000, $alpha: 0.1); }
+    .v-store-category-active { background-color: rgba($color: #000000, $alpha: 0.1) !important; }
+    .v-store-search-field { width: 220px !important; }
+    .v-store-drawer { border-right: 1px solid rgba($color: #000000, $alpha: 0.3); }
 </style>

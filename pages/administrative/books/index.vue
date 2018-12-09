@@ -1,6 +1,6 @@
 <template>
     <v-content class="content-overlay">
-        <v-container>
+        <v-container fluid>
             <v-card>
                <v-card-title class="card-title font-raleway-regular">
                    Knygų sąrašas

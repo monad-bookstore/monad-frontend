@@ -94,7 +94,7 @@
                             </v-btn>
                             <v-toolbar-title>Knygos „{{ product.title }}“ komentarai</v-toolbar-title>
                             <v-spacer></v-spacer>
-                            <v-btn flat outline color="blue" @click="writing_comment = true">
+                            <v-btn flat outline color="blue" @click="writing_comment = !writing_comment">
                                 Palikti komentarą
                             </v-btn>
                         </v-toolbar>
@@ -105,8 +105,8 @@
                                         <v-list-tile-title v-html="comment.message"></v-list-tile-title>
                                         <v-list-tile-sub-title v-html="friendly_date(comment.createdAt)"></v-list-tile-sub-title>
                                     </v-list-tile-content>
-                                    <v-list-tile-content class="align-end" v-if="$client.privileged($AccessLevel.ADMINISTRATOR, $AccessLevel.MANAGER)">
-                                        <v-btn icon flat>
+                                    <v-list-tile-content class="align-end" v-if="$client.privileged($AccessLevel.ADMINISTRATOR, $AccessLevel.MANAGER, $AccessLevel.SUPPORT, $AccessLevel.EMPLOYEE)">
+                                        <v-btn icon flat @click="delete_comment(comment.id)">
                                             <v-icon>delete</v-icon>
                                         </v-btn>
                                     </v-list-tile-content>
@@ -125,6 +125,29 @@
                     <v-progress-circular indeterminate></v-progress-circular>
                 </v-layout>
             </template>
+            <v-dialog v-model="writing_comment" persistent width="600px">
+                <v-card flat>
+                    <v-card-text>
+                        <v-textarea
+                            v-model="comment"
+                            auto-grow
+                            row-height="64"
+                            color="deep-purple"
+                            label="Komentaras"
+                            rows="1"
+                        ></v-textarea>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn flat color="black" @click="writing_comment = false">
+                            Atšaukti
+                        </v-btn>
+                        <v-btn flat color="indigo" @click="save_comment">
+                            Įrašyti
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-container>
     </v-content>
 </template>
@@ -142,13 +165,11 @@
                 comments: false,
                 rating: -1,
                 writing_comment: false,
+                comment: ''
             }
         },
         mounted() {
-            this.$axios.get(`/api/store/product/${this.parameter}`).then((response) => {
-                this.product = response.data
-                this.rating = this.avarageRating();
-            }).catch((error) => {})
+            this.fetch_product()
         },
         computed: {
             ...mapGetters([
@@ -161,6 +182,12 @@
             },
         },
         methods: {
+            fetch_product() {
+                this.$axios.get(`/api/store/product/${this.parameter}`).then((response) => {
+                    this.product = response.data
+                    this.rating = this.avarageRating();
+                }).catch((error) => {})
+            },
             cart_append(product) {
                 this.$store.commit('CART_ADD_PRODUCTS', product)
                 this.$store.commit('SET_MESSAGE', "Pridėta į krepšelį")
@@ -185,6 +212,31 @@
             },
             friendly_date(date) {
                 return moment(date).format('YYYY-MM-DD HH:mm')
+            },
+            delete_comment(comid) {
+                this.$axios.get(`/api/privileged/comments/delete/${comid}`).then((response) => {
+                    this.$message.show("Komentaras ištrintas.")
+                    this.fetch_product()
+                }).catch((error) => {
+                    this.$message.show("Klaida trinant komentarą.")
+                })
+            },
+            save_comment() {
+                const payload = {
+                    bookId: this.product.id,
+                    message: this.comment
+                }
+
+                this.$axios.post('/api/comments/create', payload).then((response) => {
+                    this.$message.show('Komentaras įrašytas!')
+                    this.writing_comment = false
+                    this.comments = true
+                    this.fetch_product()
+                }).catch((error) => {
+                    this.comments = true
+                    this.writing_comment = false
+                    this.$message.show('Klaida bandant įrašyti komentarą!')
+                })
             }
         }
     }
