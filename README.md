@@ -36,7 +36,7 @@
 
 - [x] Krepšelio išdėstymas
 
-  - [ ] Pirkinio patvirtinimas
+  - [x] Pirkinio patvirtinimas
 
 - [ ] Užsakymų sąrašas
 
@@ -49,7 +49,7 @@
 - [ ] Bylų sąrašo peržiūra
 
   - [ ] Bylos peržiūra
-    - [ ] Bylos uždarymas, komentavimas.
+    - [x] Bylos uždarymas, komentavimas.
   - [ ] Bylų peržiūra privilegijuotiems vartotojams
     - [ ] Bylų kontrolė
 
@@ -75,13 +75,13 @@
 
   - [x] Parduotuvės administravimo elementų išdėstymas
 
-    - [ ] Autorių peržiūrejimas
+    - [x] Autorių peržiūrejimas
 
-      - [ ] Keitimas, trynimas
+      - [x] Keitimas, trynimas
 
-    - [ ] Kategorijų peržiūrėjimas
+    - [x] Kategorijų peržiūrėjimas
 
-      - [ ] Keitimas, trynimas
+      - [x] Keitimas, trynimas
 
     - [x] Knygų sąrašo peržiūra
 
