@@ -26,7 +26,7 @@
                     </v-list>
                 </v-card-text>
                 <v-divider></v-divider>
-                <v-card-text>
+                <v-card-text v-if="profile.success">
                     <small v-if="hasNoAddresses" class="red--text">
                         Jūs neturite sukurtų adresų. Pridėti naujus pristatymo adresus galite skiltyje <nuxt-link to="/client/settings">Nustatymai</nuxt-link>.
                     </small>
@@ -37,6 +37,9 @@
                     <v-select :items="payments"
                         label="Apmokėjimo būdas">
                     </v-select>
+                </v-card-text>
+                <v-card-text v-else>
+                    Norėdami užsakyti prekes, prieš tai nurodykite savo vardą ir pavardę skiltyje <nuxt-link to="/client/settings">Nustatymai</nuxt-link>.
                 </v-card-text>
                 <v-divider></v-divider>
                 <v-card-title class="card-title">
@@ -73,6 +76,21 @@
                     fields: ['addressid', 'books']
                 }
             }
+        },
+        asyncData(context) {
+            return context.$axios.get('/api/profile/get').then((response) => {
+                return { profile: response.data }
+            }).catch((e) => {
+                return { 
+                    profile: { 
+                        success: false, 
+                        data: {
+                            name: "",
+                            surname: ""
+                        }
+                    } 
+                }
+            })
         },
         mounted() {
             this.$store.dispatch('request_client_addresses')

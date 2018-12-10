@@ -5,6 +5,7 @@
                 <v-card-title class="card-title font-raleway-regular">
                     Kliento registracija
                 </v-card-title>
+                <v-divider></v-divider>
                 <v-form v-model="valid" @keyup.enter.native="register">
                     <v-card-text>
 
@@ -39,6 +40,8 @@
     export default {
         middleware: ['preload-client', 'authenticated'],
         layout: 'administrative',
+        // Administrator,Manager
+        privileges: [1, 2],
         data() 
         {
             return {

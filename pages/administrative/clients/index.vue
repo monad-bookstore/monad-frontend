@@ -69,9 +69,12 @@
 
     import moment from 'moment'
     import { mapGetters } from 'vuex'
+    import assertPrivilage from '@/plugins/mixins/assert-privilege'
     export default {
-        middleware: ['preload-client', 'authenticated', 'preload-data', 'preload-administrative-data'],
         layout: 'administrative',
+        middleware: ['preload-client', 'authenticated', 'preload-data', 'preload-administrative-data'],
+        // Administrator,Manager
+        privileges: [1, 2],
         data() {
             return {
                 table: {
