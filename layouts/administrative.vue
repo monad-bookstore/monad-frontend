@@ -6,13 +6,13 @@
                     <v-list-group :key="group.text" 
                         v-if="group.subgroup !== undefined && (group.privileges === undefined || privileged(group.privileges))"
                     >
-                        <v-list-tile slot="activator">
+                        <v-list-tile class="v-tile-font" slot="activator">
                             <v-list-tile-action v-if="group.icon !== undefined">
                                 <v-icon>{{ group.icon }}</v-icon>
                             </v-list-tile-action>
                             <v-list-tile-title>{{ group.text }}</v-list-tile-title>
                         </v-list-tile>
-                        <v-list-tile v-for="subgroup in group.subgroup" 
+                        <v-list-tile class="v-tile-font" v-for="subgroup in group.subgroup" 
                             :key="subgroup.text" 
                             @click="redirect(subgroup.route)" 
                             v-if="privileged(subgroup.privileges)"
@@ -25,7 +25,7 @@
                             <v-list-tile-title>{{ subgroup.text }}</v-list-tile-title>
                         </v-list-tile>
                     </v-list-group>
-                    <v-list-tile v-else 
+                    <v-list-tile class="v-tile-font" v-else 
                         @click="redirect(group.route)"
                         active-class="v-drawer-active"
                         :value="isCurrent(group.route)"
@@ -125,7 +125,7 @@
 </script>
 <style lang="scss">
 
-    .v-list__tile {
+    .v-tile-font {
         font-family: Raleway;
         font-weight: 400;
     }

@@ -15,7 +15,8 @@
 			<template v-else>
 				<v-toolbar-items>
 					<v-btn flat :to="'/store'">Parduotuvė</v-btn>
-					<v-btn flat :to="'/orders'">Užsakymai</v-btn>
+					<v-btn flat :to="'/client/orders'">Užsakymai</v-btn>
+					<v-btn flat :to="'/client/cases'">Bylos</v-btn>
 				</v-toolbar-items>
 				<v-spacer></v-spacer>
 					<v-btn flat :to="'/administrative'">Administravimas</v-btn>

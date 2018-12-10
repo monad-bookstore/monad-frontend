@@ -15,10 +15,10 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <!-- TODO: Pridėti nuorodą į užsakymo peržiūrėjimą -->
-                            <v-btn flat color="indigo">
+                            <v-btn flat color="indigo" @click="$router.push(`/client/order/${order.id}`)">
                                 Peržiūrėti užsakymą
                             </v-btn>
-                            <v-btn flat color="black" @click="$router.push('/orders')">
+                            <v-btn flat color="black" @click="$router.push('/client/orders')">
                                 Visi užsakymai
                             </v-btn>
                         </v-card-actions>

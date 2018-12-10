@@ -11,7 +11,9 @@
                         label="Užsakymo paieška" 
                         single-line 
                         hide-details
-                    ></v-text-field>
+                    >
+                        
+                    </v-text-field>
                 </v-card-title> 
                 <v-divider></v-divider>
                 <v-card-text>
@@ -95,6 +97,14 @@
             },
             searchFilter(items, search, filter) {
                 return _.filter(items, function(item) {
+
+                    if (search === ":payment:successful") { return item.status == 0 }
+                    else if(search === ":payment:verified") { return item.status == 1 }
+                    else if(search === ":processing") { return item.status == 2 }
+                    else if(search === ":shipped") { return item.status == 3 }
+                    else if(search === ":completed") { return item.status == 4 }
+                    else if(search === ":today") { return moment(item.createdAt).isSame(moment(), 'd') }
+
                     let searchArray = []
                     if (!!item.client) {
                         searchArray.push(`${item.client.email}`)
