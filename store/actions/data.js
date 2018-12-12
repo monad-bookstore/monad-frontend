@@ -1,6 +1,6 @@
 export default {
     request_author_collection({ commit }) {
-        return this.$axios.get('/api/privileged/authors/get').then((response) => {
+        return this.$axios.get('/api/authors/get').then((response) => {
             commit('SET_AUTHORS', response.data)
         });
     },

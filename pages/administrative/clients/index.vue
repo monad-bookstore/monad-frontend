@@ -48,7 +48,7 @@
                                 </td>
                                 <td class="text-xs-left">
                                    
-                                    <v-btn flat small outline color="red" @click="removeClient(props.item.id)">
+                                    <v-btn v-if="$client.privileged($AccessLevel.ADMINISTRATOR)" flat small outline color="red" @click="removeClient(props.item.id)">
                                         Trinti
                                     </v-btn>
                                 </td>
@@ -129,6 +129,9 @@
                 })
             },
             save(client) {
+                if (!this.$client.privileged(this.$AccessLevel.ADMINISTRATOR))
+                    return
+
                 this.$axios.post(`/api/privileged/clients/modify/${client.id}`, client).then((response) => {
                     this.$message.show('Išsaugota.')
                 })

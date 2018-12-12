@@ -19,7 +19,7 @@
 					<v-btn flat :to="'/client/cases'">Bylos</v-btn>
 				</v-toolbar-items>
 				<v-spacer></v-spacer>
-					<v-btn flat :to="'/administrative'">Administravimas</v-btn>
+					<v-btn flat :to="'/administrative'" v-if="client.accessFlag > 0">Administravimas</v-btn>
 					<v-btn flat :to="'/client/settings'">Nustatymai</v-btn>
 					<v-btn flat @click="cart_drawer = !cart_drawer" class="ma-0">
 						Krepšelis
@@ -57,7 +57,7 @@
 		},
 		computed: {
 			...mapGetters([
-				'isAuthenticated'
+				'isAuthenticated', 'client'
 			]),
 		},
 		methods: {

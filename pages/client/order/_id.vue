@@ -94,7 +94,7 @@
                             color: "info",
                             text: "Apmokėjimas sėkmingas - laukiama patvirtinimo"
                         }, 1: {
-                            color: "success lighten-3",
+                            color: "success darken-3",
                             text: "Apmokėjimas patvirtintas - užsakymas ruošiamas"
                         }, 2: {
                             color: "success",
@@ -103,8 +103,8 @@
                             color: "info",
                             text: "Išsiųsta"
                         }, 4: {
-                            color: "Užsakymas užbaigtas",
-                            text: "indigo"
+                            color: "indigo",
+                            text: "Užsakymas užbaigtas"
                         }
                 }
             }

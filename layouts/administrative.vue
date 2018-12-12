@@ -25,10 +25,11 @@
                             <v-list-tile-title>{{ subgroup.text }}</v-list-tile-title>
                         </v-list-tile>
                     </v-list-group>
-                    <v-list-tile class="v-tile-font" v-else 
+                    <v-list-tile class="v-tile-font" 
                         @click="redirect(group.route)"
                         active-class="v-drawer-active"
                         :value="isCurrent(group.route)"
+                        v-if="group.subgroup === undefined && (group.privileges === undefined || privileged(group.privileges))"
                     >
                         <v-list-tile-action v-if="group.icon !== undefined">
                                 <v-icon>{{ group.icon }}</v-icon>
@@ -70,7 +71,7 @@
                             text: "Registravimas",
                             icon: "person_add",
                             route: "/administrative/clients/create",
-                            privileges: [1, 2]
+                            privileges: [1]
                         }, {
                             text: "Užsakymai",
                             icon: "local_mall",
@@ -100,7 +101,7 @@
                     },  {
                             text: "Bylų valdymas",
                             icon: "contact_support",
-                            privileges: [1, 2, 3, 4],
+                            privileges: [1, 3, 4],
                             route: "/administrative/cases"
                     }]
                 },
